@@ -9,6 +9,7 @@ use std::fs::File;
 use std::io;
 use std::io::{BufReader, Read, Seek, SeekFrom};
 use std::path::Path;
+use std::{thread, time};
 
 struct FileSearcher<'a> {
     buf_reader: BufReader<File>,
@@ -84,7 +85,10 @@ pub fn extract_to(src: &Path, dst: &Path) -> io::Result<()> {
     if found {
         Ok(())
     } else {
-        Err(io::Error::new(io::ErrorKind::Other, "no tarball found inside binary"))
+        let error_message = "no tarball found inside binary";
+        println!("There was an error: {}", error_message);
+        thread::sleep(time::Duration::from_secs(5));
+        Err(io::Error::new(io::ErrorKind::Other, error_message))
     }
 }
 

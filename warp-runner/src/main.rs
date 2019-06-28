@@ -47,7 +47,7 @@ fn main() -> Result<(), Box<Error>> {
     if env::var("WARP_TRACE").is_ok() {
         simple_logger::init_with_level(Level::Trace)?;
     }
-
+    println!("Nethermind is loading, please wait (the first launch may take a while)...");
     let self_path = env::current_exe()?;
     let self_file_name = self_path.file_name().unwrap();
     let cache_path = cache_path(&self_file_name.to_string_lossy());
@@ -70,6 +70,7 @@ fn main() -> Result<(), Box<Error>> {
                 trace!("cache is outdated");
                 extract(&self_path, &cache_path)?;
             }
+            // window.hide();
         }
         Err(_) => {
             trace!("cache not found");
@@ -77,6 +78,7 @@ fn main() -> Result<(), Box<Error>> {
         }
     }
 
+    println!("Nethermind was loaded.");
     let exit_code = executor::execute(&target_path)?;
     process::exit(exit_code);
 }
