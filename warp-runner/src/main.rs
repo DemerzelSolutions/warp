@@ -70,7 +70,6 @@ fn main() -> Result<(), Box<Error>> {
                 trace!("cache is outdated");
                 extract(&self_path, &cache_path)?;
             }
-            // window.hide();
         }
         Err(_) => {
             trace!("cache not found");
