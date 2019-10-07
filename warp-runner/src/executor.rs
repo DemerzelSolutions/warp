@@ -7,7 +7,13 @@ use std::process::Stdio;
 pub fn execute(target: &Path) -> io::Result<i32> {
     trace!("target={:?}", target);
 
-    let args: Vec<String> = env::args().skip(1).collect();
+    let mut args: Vec<String> = env::args().skip(1).collect();
+    let self_path = env::current_exe().ok().unwrap();
+    let file_name = self_path.file_name().unwrap().to_str().unwrap();
+    let file_name_index = self_path.to_str().unwrap().rfind(file_name).unwrap();
+    let working_directory: String = self_path.to_str().unwrap().chars().take(file_name_index).collect();
+    args.push("--workingDirectory".to_string());
+    args.push(working_directory);
     trace!("args={:?}", args);
 
     do_execute(target, &args)
